@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Manage Payments | TravelBase</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/responsive.css">
+    <script defer src="../../assets/js/main.js"></script>
+    <script defer src="../../assets/js/admin.js"></script>
+  </head>
+  <body data-root="../.." data-role="admin" data-section="payments">
+    <div id="dashboard-shell">
+    </div>
+    <main class="app-main">
+      <div class="app-titlebar">
+        <div>
+          <h1>Payments</h1>
+          <p>Payment records in the sample dataset. No payment processing is available in this frontend.</p>
+        </div>
+      </div>
+      <section class="panel">
+        <div class="toolbar">
+          <input id="table-search" class="control admin-search" type="search" placeholder="Search payments" aria-label="Search payments">
+        </div>
+        <div class="table-wrap">
+          <table id="data-table">
+            <thead>
+              <tr>
+                <th>Payment ID</th>
+                <th>Booking ID</th>
+                <th>Customer</th>
+                <th>Amount</th>
+                <th>Payment date</th>
+                <th>Method</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>PAY-9082</td>
+                <td>TE-24081</td>
+                <td>Alex Morgan</td>
+                <td>₹2,58,000</td>
+                <td>18 Nov 2026</td>
+                <td>Credit card</td>
+                <td><span class="badge badge-success">Paid</span></td>
+              </tr>
+              <tr>
+                <td>PAY-9081</td>
+                <td>TE-24079</td>
+                <td>Jordan Lee</td>
+                <td>₹3,48,000</td>
+                <td>15 Nov 2026</td>
+                <td>Bank transfer</td>
+                <td><span class="badge badge-success">Paid</span></td>
+              </tr>
+              <tr>
+                <td>PAY-9080</td>
+                <td>TE-24080</td>
+                <td>Samira Patel</td>
+                <td>₹1,50,000</td>
+                <td>14 Nov 2026</td>
+                <td>Credit card</td>
+                <td><span class="badge badge-warning">Partial</span></td>
+              </tr>
+              <tr>
+                <td>PAY-9079</td>
+                <td>TE-24078</td>
+                <td>Casey Rivera</td>
+                <td>₹0</td>
+                <td>—</td>
+                <td>—</td>
+                <td><span class="badge badge-danger">Refunded</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

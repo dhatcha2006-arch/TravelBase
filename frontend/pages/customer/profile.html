@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Profile | TravelBase</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/responsive.css">
+    <script defer src="../../assets/js/main.js"></script>
+    <script defer src="../../assets/js/admin.js"></script>
+    <script defer src="../../assets/js/booking.js"></script>
+  </head>
+  <body data-root="../.." data-role="customer" data-section="profile">
+    <div id="dashboard-shell">
+    </div>
+    <main class="app-main">
+      <div class="app-titlebar">
+        <div>
+          <h1>My profile</h1>
+          <p>Keep your contact details up to date for your travel plans.</p>
+        </div>
+      </div>
+      <section class="panel" style="max-width:760px">
+        <div id="profile-message" hidden>
+        </div>
+        <form id="profile-form" class="form-grid">
+          <div class="field">
+            <label for="name">Full name</label>
+            <input id="name" name="name" required autocomplete="name" value="Alex Morgan" readonly>
+          </div>
+          <div class="field">
+            <label for="email">Email address</label>
+            <input id="email" name="email" type="email" required autocomplete="email" value="alex.morgan@example.com" readonly>
+          </div>
+          <div class="field">
+            <label for="phone">Phone number</label>
+            <input id="phone" name="phone" type="tel" required autocomplete="tel" value="+1 503 555 0142" readonly>
+          </div>
+          <div class="field">
+            <label for="address">Address</label>
+            <input id="address" name="address" autocomplete="street-address" value="Pune, Maharashtra" readonly>
+          </div>
+          <div class="wide">
+            <button class="btn btn-outline" id="edit-profile" type="button">Edit profile</button>
+            <button class="btn btn-primary" id="save-profile" type="submit" disabled>Save changes</button>
+          </div>
+        </form>
+        <p class="notice">Changes are saved in this browser only until a backend is connected.</p>
+      </section>
+    </main>
+  </body>
+</html>
