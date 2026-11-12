@@ -1,0 +1,151 @@
+TRAVELBASE - GITHUB PUSH AND COLLABORATION GUIDE
+================================================
+
+This guide covers how to publish the TravelBase frontend and collaborate
+with your friend, GitHub user: ariprakash32.
+
+Replace YOUR_GITHUB_USERNAME and YOUR_REPOSITORY with your own GitHub
+username and the repository name you create. Do not put a password or
+personal access token in a command or save one in this project.
+
+
+1. CREATE THE GITHUB REPOSITORY
+-------------------------------
+
+1. Sign in to GitHub and choose New repository.
+2. Enter a repository name, for example: TravelBase.
+3. Choose Public or Private.
+4. For an existing local project, create the repository without adding a
+   README, .gitignore, or license on GitHub. This avoids an initial history
+   conflict with your local project.
+5. Copy the HTTPS repository URL. It will look like:
+
+   https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY.git
+
+
+2. PUSH THE FRONTEND FROM WINDOWS POWERSHELL
+--------------------------------------------
+
+Open PowerShell in the project directory and run:
+
+   cd D:\TRAVELBASE
+   git init -b main
+   git add frontend
+   git status
+   git commit -m "Add TravelBase frontend"
+   git remote add origin https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY.git
+   git push -u origin main
+
+Review the output of "git status" before committing. The command above stages
+only the frontend folder. If you intend to publish other project folders too,
+stage those folders explicitly after reviewing them.
+
+If Git says that "main" already exists or this folder is already a repository,
+do not run git init again. Check the current setup first:
+
+   git status
+   git branch --show-current
+   git remote -v
+
+If origin is not configured, add it with the "git remote add origin" command
+above. If origin is already listed, do not add it again.
+
+If Git needs your author details, configure them on your computer:
+
+   git config --global user.name "YOUR_NAME"
+   git config --global user.email "YOUR_EMAIL"
+
+GitHub may open a browser sign-in or use Git Credential Manager. Complete
+authentication there; never paste credentials into this text file or a
+remote URL.
+
+
+3. INVITE ARIPRAKASH32
+----------------------
+
+On the GitHub repository page:
+
+1. Open Settings.
+2. Open Collaborators (or Collaborators and teams).
+3. Choose Add people.
+4. Search for and select: ariprakash32
+5. Send the invitation.
+6. Ask your friend to accept the GitHub invitation.
+
+For a private repository, your friend needs to accept the invitation before
+they can clone or push. Give only the repository access they need.
+
+
+4. FRIEND'S WORKFLOW
+--------------------
+
+After accepting the invitation, your friend can clone the repository and
+create a separate branch for each change:
+
+   git clone https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY.git
+   cd YOUR_REPOSITORY
+   git switch -c feature/describe-the-change
+
+After editing files:
+
+   git status
+   git add frontend
+   git commit -m "Describe the change"
+   git push -u origin feature/describe-the-change
+
+Then your friend opens a Pull Request on GitHub:
+
+1. Set the base branch to main.
+2. Set the compare branch to feature/describe-the-change.
+3. Describe what changed and request your review.
+4. Review and test the change before merging.
+
+Use a new branch name for each task. Do not both make unrelated changes
+directly on main.
+
+
+5. KEEPING A LOCAL COPY UP TO DATE
+----------------------------------
+
+After a Pull Request is merged, update your local main branch:
+
+   git switch main
+   git pull --ff-only origin main
+
+Before starting another change:
+
+   git switch main
+   git pull --ff-only origin main
+   git switch -c feature/another-change
+
+If Git reports a merge conflict, stop and resolve the conflicting files
+carefully. Do not use "git push --force" to solve a collaboration conflict.
+
+
+6. RUN THE FRONTEND LOCALLY
+---------------------------
+
+From D:\TRAVELBASE, start the static site server:
+
+   python -m http.server 8000 --directory frontend
+
+Open this address in your browser:
+
+   http://localhost:8000
+
+Bootstrap, Bootstrap Icons, Chart.js, and travel photographs are loaded from
+public CDNs, so those assets require an internet connection.
+
+
+USEFUL COMMANDS
+---------------
+
+   git status                 Show changed and staged files
+   git branch                 List local branches
+   git remote -v              Show configured GitHub remotes
+   git log --oneline -5       Show the last five commits
+   git diff                   Review unstaged changes
+   git diff --staged          Review changes staged for commit
+
+The frontend uses mock data. Login, bookings, and payments are not connected
+to a backend yet.
