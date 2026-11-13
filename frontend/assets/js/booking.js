@@ -60,6 +60,14 @@ function setupProfileForm() {
   });
 }
 
+function getLocalDateString(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
 function setupBookingForm() {
   const form = document.querySelector("#booking-form");
 
@@ -75,7 +83,9 @@ function setupBookingForm() {
   const passengerSummary = document.querySelector("#summary-passengers");
   const totalSummary = document.querySelector("#summary-total");
 
-  if (searchDate) {
+  travelDate.min = getLocalDateString(new Date());
+
+  if (searchDate && searchDate >= travelDate.min) {
     travelDate.value = searchDate;
   }
 
@@ -129,14 +139,14 @@ function setupBookingForm() {
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 
+    const minimumDate = getLocalDateString(new Date());
+    travelDate.min = minimumDate;
+
     if (!form.reportValidity()) {
       return;
     }
 
-    const departureDate = new Date(`${travelDate.value}T00:00:00`);
-    const today = new Date(new Date().toDateString());
-
-    if (departureDate < today) {
+    if (travelDate.value < minimumDate) {
       showMessage(
         document.querySelector("#booking-message"),
         "Choose a travel date that has not passed.",
