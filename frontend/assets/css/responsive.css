@@ -1,0 +1,33 @@
+@media(max-width:440px) {
+  .stat-grid {
+    grid-template-columns:1fr 1fr
+  }
+  .stat-card span {
+    font-size:.78rem
+  }
+  .stat-card strong {
+    font-size:1.2rem
+  }
+  .app-user span {
+    display:none
+  }
+  .app-header .brand {
+    font-size:1.1rem
+  }
+  .table-wrap {
+    margin:0 -8px
+  }
+  .panel {
+    padding:15px
+  }
+  .hero h1 {
+    font-size:2.65rem
+  }
+  .nav-actions .btn-primary {
+    font-size: .8rem;
+    padding:8px
+  }
+  .package-card img {
+    height:205px
+  }
+}

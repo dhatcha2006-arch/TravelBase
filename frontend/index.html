@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="Thoughtful trips and local expertise from TravelBase."
+    >
+    <title>TravelBase | Explore the World</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    >
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    >
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <script defer src="assets/js/main.js"></script>
+    <script defer src="assets/js/packages.js"></script>
+  </head>
+  <body data-root=".">
+    <header id="site-header">
+    </header>
+    <main>
+      <section class="hero">
+        <div class="container hero-content">
+          <span class="eyebrow">Travel with intention</span>
+          <h1>Explore the World with TravelBase</h1>
+          <p>
+            Thoughtfully designed journeys, local expertise and the space to
+            make every trip your own.
+          </p>
+          <form class="search-panel" id="hero-search">
+            <div class="field">
+              <label for="hero-destination">Where would you like to go?</label>
+              <input
+                id="hero-destination"
+                placeholder="Try Kerala or Jaipur"
+              >
+            </div>
+            <div class="field">
+              <label for="hero-date">When?</label>
+              <input id="hero-date" type="date">
+            </div>
+            <div class="field">
+              <label for="hero-budget">Your budget</label>
+              <select id="hero-budget">
+                <option value="">Any budget</option>
+                <option value="150000">Up to ₹1,50,000</option>
+                <option value="200000">Up to ₹2,00,000</option>
+                <option value="300000">Up to ₹3,00,000</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" type="submit">
+              <i class="bi bi-search"></i>
+              Find a trip
+            </button>
+          </form>
+        </div>
+      </section>
+      <section class="section">
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">A few places to begin</span>
+              <h2>Discover India</h2>
+              <p>
+                Find your own way through historic cities, quiet backwaters and
+                the mountains of the north.
+              </p>
+            </div>
+            <a href="pages/packages.html?search=India">
+              Browse all trips <i class="bi bi-arrow-right"></i>
+            </a>
+          </div>
+          <div class="destination-grid">
+            <a class="destination-card" href="pages/packages.html?search=Agra">
+              <img
+                src="https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=900&q=80"
+                alt="The Taj Mahal in Agra"
+              >
+              <div class="destination-label">
+                <h3>Agra</h3>
+                <span>The Taj Mahal and Mughal heritage</span>
+              </div>
+            </a>
+            <a class="destination-card" href="pages/packages.html?search=Kerala">
+              <img
+                src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=900&q=80"
+                alt="A houseboat travelling through Kerala backwaters"
+              >
+              <div class="destination-label">
+                <h3>Kerala</h3>
+                <span>Backwaters, tea hills and coast</span>
+              </div>
+            </a>
+            <a class="destination-card" href="pages/packages.html?search=Jaipur">
+              <img
+                src="https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?auto=format&fit=crop&w=900&q=80"
+                alt="Historic architecture in Jaipur"
+              >
+              <div class="destination-label">
+                <h3>Jaipur</h3>
+                <span>Palaces, forts and colourful bazaars</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+      <section class="section section--soft">
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Selected for you</span>
+              <h2>Featured journeys</h2>
+              <p>
+                Small details, trusted local partners and a little breathing
+                room built into every itinerary.
+              </p>
+            </div>
+            <a href="pages/packages.html">
+              See all packages <i class="bi bi-arrow-right"></i>
+            </a>
+          </div>
+          <div class="package-grid" id="featured-packages">
+          </div>
+        </div>
+      </section>
+      <section class="section">
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">The TravelBase difference</span>
+              <h2>Good travel starts with good care</h2>
+              <p>
+                We look after the details so you can be present for the places
+                and people you meet.
+              </p>
+            </div>
+          </div>
+          <div class="features-grid">
+            <article class="feature">
+              <span class="feature-icon"><i class="bi bi-person-heart"></i></span>
+              <h3>People who know the place</h3>
+              <p>
+                Our local partners bring context and warmth that guidebooks
+                can't replicate.
+              </p>
+            </article>
+            <article class="feature">
+              <span class="feature-icon"><i class="bi bi-signpost-split"></i></span>
+              <h3>Room for your own pace</h3>
+              <p>
+                Our itineraries balance thoughtfully planned moments with time
+                to wander.
+              </p>
+            </article>
+            <article class="feature">
+              <span class="feature-icon"><i class="bi bi-headset"></i></span>
+              <h3>Support when you need it</h3>
+              <p>
+                A real travel specialist is here before, during and after your
+                journey.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section class="section section--soft">
+        <div class="container">
+          <div class="testimonial">
+            <span class="eyebrow">A note from a traveller</span>
+            <blockquote>
+              “Everything felt considered but never over-planned. We came home
+              with stories, not just photos.”
+            </blockquote>
+            <p>— Maya R., travelled with us in Kyoto</p>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer id="site-footer" class="site-footer">
+    </footer>
+  </body>
+</html>

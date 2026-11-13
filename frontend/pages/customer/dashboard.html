@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Travel Dashboard | TravelBase</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/responsive.css">
+    <script defer src="../../assets/js/main.js"></script>
+    <script defer src="../../assets/js/admin.js"></script>
+  </head>
+  <body data-root="../.." data-role="customer" data-section="dashboard">
+    <div id="dashboard-shell">
+    </div>
+    <main class="app-main">
+      <div class="app-titlebar">
+        <div>
+          <h1>Good morning, Alex</h1>
+          <p>Your next adventure is closer than you think.</p>
+        </div>
+        <a class="btn btn-primary" href="../../pages/packages.html"><i class="bi bi-plus-lg"></i> Find a trip</a>
+      </div>
+      <div class="stat-grid">
+        <article class="stat-card">
+          <span>Total bookings</span>
+          <strong>4</strong>
+          <small>Since joining</small>
+        </article>
+        <article class="stat-card">
+          <span>Upcoming trips</span>
+          <strong>1</strong>
+          <small>Next: Bali, Indonesia</small>
+        </article>
+        <article class="stat-card">
+          <span>Completed trips</span>
+          <strong>3</strong>
+          <small>Memories made</small>
+        </article>
+      </div>
+      <section class="panel">
+        <div class="panel-heading">
+          <h2>Recent booking activity</h2>
+          <a href="my-bookings.html">All bookings</a>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Trip</th>
+                <th>Travel date</th>
+                <th>Guests</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Bali Island Escape</strong><br><span class="text-muted">Bali, Indonesia</span></td>
+                <td>12 May 2027</td>
+                <td>2</td>
+                <td><span class="badge badge-success">Confirmed</span></td>
+                <td><a href="my-bookings.html">Details</a></td>
+              </tr>
+              <tr>
+                <td><strong>Kyoto Culture Trail</strong><br><span class="text-muted">Kyoto & Osaka, Japan</span></td>
+                <td>03 Oct 2025</td>
+                <td>2</td>
+                <td><span class="badge">Completed</span></td>
+                <td><a href="../../pages/package-details.html?id=kyoto-culture">View trip</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="panel">
+        <div class="panel-heading">
+          <h2>Plan your next getaway</h2>
+        </div>
+        <p class="text-muted">Browse our latest trips and ask our specialists to help tailor your itinerary.</p>
+        <a class="btn btn-outline" href="../../pages/packages.html">Explore packages</a>
+        <a class="btn btn-outline" href="profile.html">Update profile</a>
+      </section>
+    </main>
+  </body>
+</html>
