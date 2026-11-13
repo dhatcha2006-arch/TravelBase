@@ -1,0 +1,28 @@
+
+name: Auto Sync TravelBase
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout my fork
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Sync friend's repository
+        run: |
+          git remote add upstream https://github.com/dhatcha2006-arch/TravelBase.git
+          git fetch upstream main
+          git merge --ff-only upstream/main
+          git push origin HEAD:main

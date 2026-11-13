@@ -1,3 +1,26 @@
+async function submitToFlask(form, url, message) {
+  try {
+    const tokenResponse = await fetch("/csrf-token", { credentials: "same-origin" });
+    const { token } = await tokenResponse.json();
+    const response = await fetch(url, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-CSRF-Token": token,
+      },
+      body: new URLSearchParams(new FormData(form)),
+    });
+    if (new URL(response.url).searchParams.has("error")) {
+      showMessage(message, "That didn't work. Check your details and try again.", "error");
+      return;
+    }
+    window.location.href = response.url;
+  } catch (error) {
+    showMessage(message, "Could not reach the server. Is it running?", "error");
+  }
+}
+
 function setupRegistrationForm() {
   const form = document.querySelector("#register-form");
 
@@ -34,11 +57,7 @@ function setupRegistrationForm() {
       return;
     }
 
-    showMessage(
-      message,
-      "Your details look good. Account creation will be available when TravelBase connects to its booking service.",
-      "success",
-    );
+    submitToFlask(form, "/register", message);
   });
 }
 
@@ -63,11 +82,7 @@ function setupLoginForm() {
       return;
     }
 
-    showMessage(
-      message,
-      "This frontend demo does not authenticate users yet. Connect the Flask service to enable customer and admin sign-in.",
-      "error",
-    );
+    submitToFlask(form, "/login", message);
   });
 }
 
