@@ -68,6 +68,62 @@ function getLocalDateString(date) {
   return `${year}-${month}-${day}`;
 }
 
+const demoBookingsStorageKey = "travelbase-bookings";
+
+function isValidTravelDate(value) {
+  return (
+    typeof value === "string" &&
+    /^\d{4}-\d{2}-\d{2}$/.test(value) &&
+    getLocalDateString(new Date(`${value}T00:00:00`)) === value
+  );
+}
+
+function isValidDemoBooking(booking) {
+  return (
+    booking &&
+    typeof booking.id === "string" &&
+    typeof booking.packageId === "string" &&
+    typeof booking.packageName === "string" &&
+    typeof booking.destination === "string" &&
+    isValidTravelDate(booking.travelDate) &&
+    Number.isInteger(booking.passengers) &&
+    booking.passengers >= 1 &&
+    booking.passengers <= 8 &&
+    Number.isFinite(booking.total) &&
+    booking.total >= 0 &&
+    booking.status === "Requested"
+  );
+}
+
+function readDemoBookings() {
+  const savedBookings = localStorage.getItem(demoBookingsStorageKey);
+
+  if (savedBookings === null) {
+    return [];
+  }
+
+  const bookings = JSON.parse(savedBookings);
+
+  if (!Array.isArray(bookings) || bookings.some((booking) => !isValidDemoBooking(booking))) {
+    throw new TypeError("Saved booking data has an unexpected format.");
+  }
+
+  return bookings;
+}
+
+function saveDemoBookings(bookings) {
+  localStorage.setItem(demoBookingsStorageKey, JSON.stringify(bookings));
+}
+
+function showBookingStorageError(messageElement, error) {
+  console.error("Unable to access saved demo bookings.", error);
+  showMessage(
+    messageElement,
+    "Saved booking data could not be accessed in this browser. Check browser storage and try again.",
+    "error",
+  );
+}
+
 function setupBookingForm() {
   const form = document.querySelector("#booking-form");
 
@@ -156,9 +212,27 @@ function setupBookingForm() {
       return;
     }
 
+    const booking = {
+      id: `TB-${Date.now()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
+      packageId: trip.id,
+      packageName: trip.name,
+      destination: trip.destination,
+      travelDate: travelDate.value,
+      passengers: Number(passengerCount.value),
+      total: trip.price * Number(passengerCount.value),
+      status: "Requested",
+    };
+
+    try {
+      saveDemoBookings([booking, ...readDemoBookings()]);
+    } catch (error) {
+      showBookingStorageError(document.querySelector("#booking-message"), error);
+      return;
+    }
+
     showMessage(
       document.querySelector("#booking-message"),
-      "Your trip request is ready. This demo does not submit a booking or collect payment.",
+      `Request ${booking.id} saved in this browser only. It was not sent to TravelBase and no payment was collected.`,
       "success",
     );
   });
@@ -166,7 +240,78 @@ function setupBookingForm() {
   updateTotal();
 }
 
+function setupSavedBookings() {
+  const table = document.querySelector("#my-bookings-table");
+
+  if (!table) {
+    return;
+  }
+
+  const message = document.querySelector("#my-bookings-message");
+  const tableBody = table.tBodies[0];
+
+  function renderBookings() {
+    tableBody.querySelectorAll("[data-demo-booking]").forEach((row) => row.remove());
+
+    let bookings;
+
+    try {
+      bookings = readDemoBookings();
+    } catch (error) {
+      showBookingStorageError(message, error);
+      return;
+    }
+
+    bookings.slice().reverse().forEach((booking) => {
+      const row = tableBody.insertRow(0);
+      row.dataset.demoBooking = booking.id;
+
+      [
+        booking.id,
+        booking.packageName,
+        new Intl.DateTimeFormat("en-IN", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        }).format(new Date(`${booking.travelDate}T00:00:00`)),
+        String(booking.passengers),
+        formatINR(booking.total),
+      ].forEach((value) => {
+        row.insertCell().textContent = value;
+      });
+
+      const statusCell = row.insertCell();
+      const badge = document.createElement("span");
+      badge.className = "badge badge-warning";
+      badge.textContent = booking.status;
+      statusCell.appendChild(badge);
+
+      const actionCell = row.insertCell();
+      const cancelButton = document.createElement("button");
+      cancelButton.className = "btn btn-outline btn-sm";
+      cancelButton.type = "button";
+      cancelButton.textContent = "Cancel";
+      cancelButton.addEventListener("click", () => {
+        if (!confirm("Remove this booking request from this browser?")) {
+          return;
+        }
+
+        try {
+          saveDemoBookings(readDemoBookings().filter((saved) => saved.id !== booking.id));
+          renderBookings();
+        } catch (error) {
+          showBookingStorageError(message, error);
+        }
+      });
+      actionCell.appendChild(cancelButton);
+    });
+  }
+
+  renderBookings();
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   setupProfileForm();
   setupBookingForm();
+  setupSavedBookings();
 });
