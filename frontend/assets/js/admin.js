@@ -392,6 +392,10 @@ function setupAdmin() {
     setupDestinationManagement();
   }
 
+  if (page === "dashboard" || document.querySelector(".stat-card")) {
+    loadLiveAdminStats();
+  }
+
   if (page === "customers") {
     setupCustomerActions();
   }
@@ -422,6 +426,22 @@ function setupAdmin() {
       });
     });
   }
+}
+
+async function loadLiveAdminStats() {
+  try {
+    const res = await fetch("/api/admin/stats", { credentials: "same-origin" });
+    if (res.ok) {
+      const stats = await res.json();
+      const statValues = document.querySelectorAll(".stat-card strong");
+      if (statValues.length >= 4) {
+        statValues[0].textContent = stats.total_bookings;
+        statValues[1].textContent = formatINR(stats.total_revenue);
+        statValues[2].textContent = stats.total_customers;
+        statValues[3].textContent = stats.total_packages;
+      }
+    }
+  } catch (_) {}
 }
 
 function showAdminModal(title, content, onSubmit) {
@@ -462,6 +482,32 @@ function showAdminModal(title, content, onSubmit) {
 
 function setupPackageManagement() {
   const tableBody = document.querySelector("#admin-package-rows");
+
+  // Attempt live sync from MySQL database
+  async function loadBackendPackages() {
+    try {
+      const res = await fetch("/api/packages");
+      if (res.ok) {
+        const liveList = await res.json();
+        if (Array.isArray(liveList) && liveList.length > 0) {
+          adminPackages = liveList.map((p) => ({
+            id: p.id,
+            name: p.name,
+            destination: p.destination,
+            price: p.price,
+            days: p.days,
+            status: p.status === "active" ? "Active" : "Draft",
+            image: p.image,
+            category: p.category,
+            description: p.description,
+          }));
+          renderPackages();
+        }
+      }
+    } catch (_) {}
+  }
+  loadBackendPackages();
+
   const fields = `
     <div class="form-grid">
       <div class="field">
@@ -726,7 +772,70 @@ function setupTableSearch(inputSelector = "#table-search", tableSelector = "#dat
   });
 }
 
-function setupBookingActions() {
+async function setupBookingActions() {
+  const tbody = document.querySelector("#data-table tbody, .panel table tbody");
+
+  // Attempt live MySQL fetch
+  try {
+    const res = await fetch("/api/admin/bookings", { credentials: "same-origin" });
+    if (res.ok) {
+      const liveBookings = await res.json();
+      if (Array.isArray(liveBookings) && liveBookings.length > 0 && tbody) {
+        tbody.innerHTML = liveBookings.map((b) => {
+          const badgeClass = b.status === "confirmed" ? "badge-success" : (b.status === "cancelled" ? "badge-danger" : "badge-warning");
+          return `
+            <tr data-booking-id="${b.id}">
+              <td><strong>${escapeHTML(b.code)}</strong></td>
+              <td>${escapeHTML(b.customer_name)}<br><small class="text-muted">${escapeHTML(b.customer_email)}</small></td>
+              <td>${escapeHTML(b.package_name)}</td>
+              <td>${b.travel_date || "Flexible"}</td>
+              <td>${b.people}</td>
+              <td>${formatINR(b.total_amount)}</td>
+              <td><span class="badge ${badgeClass}">${escapeHTML(b.status)}</span></td>
+              <td>
+                <div class="table-actions">
+                  ${b.status !== "confirmed" ? `<button class="btn btn-outline btn-sm" data-admin-action="confirmed" data-id="${b.id}"><i class="bi bi-check-lg"></i> Confirm</button>` : ""}
+                  ${b.status !== "cancelled" ? `<button class="btn btn-outline btn-sm" data-admin-action="cancelled" data-id="${b.id}"><i class="bi bi-x-lg"></i> Cancel</button>` : ""}
+                </div>
+              </td>
+            </tr>`;
+        }).join("");
+
+        tbody.querySelectorAll("[data-admin-action]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const id = btn.dataset.id;
+            const targetStatus = btn.dataset.adminAction;
+            try {
+              let csrfToken = "";
+              try {
+                const tr = await fetch("/csrf-token", { credentials: "same-origin" });
+                if (tr.ok) {
+                  const td = await tr.json();
+                  csrfToken = td.token;
+                }
+              } catch (_) {}
+
+              const updateRes = await fetch(`/api/admin/bookings/${id}/status`, {
+                method: "PATCH",
+                headers: {
+                  "Content-Type": "application/json",
+                  ...(csrfToken ? { "X-CSRF-Token": csrfToken } : {}),
+                },
+                body: JSON.stringify({ status: targetStatus }),
+              });
+              if (updateRes.ok) {
+                if (window.showToast) window.showToast(`Booking status updated to ${targetStatus}`, "success");
+                setupBookingActions();
+              }
+            } catch (_) {}
+          });
+        });
+        return;
+      }
+    }
+  } catch (_) {}
+
+  // Fallback handler for demo table
   document.querySelectorAll("[data-booking-action]").forEach((button) => {
     button.addEventListener("click", () => {
       const action = button.dataset.bookingAction;

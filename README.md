@@ -7,7 +7,7 @@
 
 TravelBase is a modern, luxury travel booking and agency management platform. It pairs a sophisticated client-facing boutique experience with a comprehensive management portal for administrators and customers.
 
----
+----
 
 ## 🌟 Features & Highlights
 

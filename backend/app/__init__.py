@@ -28,9 +28,13 @@ def create_app(test_config=None):
     db.init_app(app)
 
     from backend.app.routes.auth import auth_bp
+    from backend.app.routes.api import api_bp
+    from backend.app.routes.admin_api import admin_api_bp
     from backend.app.utils.permissions import role_required
 
     app.register_blueprint(auth_bp)
+    app.register_blueprint(api_bp)
+    app.register_blueprint(admin_api_bp)
     app.before_request(validate_csrf_token)
 
     @app.cli.command("init-db")

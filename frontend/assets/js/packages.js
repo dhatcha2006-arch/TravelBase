@@ -53,13 +53,30 @@ function setupPackageCatalog() {
   const sortOrder = document.querySelector("#sort-filter");
   let activeCategory = "all";
 
+  // Attempt live MySQL fetch from Flask backend with seamless static fallback
+  async function syncLiveCatalog() {
+    try {
+      const res = await fetch("/api/packages");
+      if (res.ok) {
+        const livePackages = await res.json();
+        if (Array.isArray(livePackages) && livePackages.length > 0) {
+          window._activePackageSource = livePackages;
+          updatePackageList();
+        }
+      }
+    } catch (_) {
+      // Running statically without backend
+    }
+  }
+
   function updatePackageList(categoryOverride) {
     if (typeof categoryOverride === "string") {
       activeCategory = categoryOverride;
     }
 
+    const dataSource = window._activePackageSource || travelPackages;
     const query = search.value.trim().toLowerCase();
-    let matchingPackages = travelPackages.filter((trip) =>
+    let matchingPackages = dataSource.filter((trip) =>
       `${trip.name} ${trip.destination}`.toLowerCase().includes(query),
     );
 
@@ -118,6 +135,7 @@ function setupPackageCatalog() {
   });
 
   updatePackageList();
+  syncLiveCatalog();
 }
 
 function renderPackageDetails() {

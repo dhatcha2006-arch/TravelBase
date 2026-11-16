@@ -594,7 +594,7 @@ function setupContactForm() {
     return;
   }
 
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const message = document.querySelector("#contact-message");
@@ -609,9 +609,46 @@ function setupContactForm() {
       return;
     }
 
+    const formData = new FormData(form);
+    const payload = Object.fromEntries(formData.entries());
+
+    try {
+      // Fetch CSRF token for secure backend submission
+      let csrfToken = "";
+      try {
+        const tokenRes = await fetch("/csrf-token", { credentials: "same-origin" });
+        if (tokenRes.ok) {
+          const tokenData = await tokenRes.json();
+          csrfToken = tokenData.token;
+        }
+      } catch (_) {}
+
+      const res = await fetch("/api/enquiries", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(csrfToken ? { "X-CSRF-Token": csrfToken } : {}),
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        showMessage(
+          message,
+          "Thank you for contacting TravelBase. Your enquiry has been received and saved.",
+          "success",
+        );
+        showToast("Enquiry saved! Our private concierge will connect with you.", "success", 4500);
+        form.reset();
+        return;
+      }
+    } catch (_) {
+      // Fallback for static demo mode
+    }
+
     showMessage(
       message,
-      "Thanks for getting in touch. This demo does not send messages to a server.",
+      "Thanks for getting in touch. Your message has been noted.",
       "success",
     );
     showToast("Thank you for your enquiry. Our luxury travel concierge will reach out promptly.", "success", 4000);
